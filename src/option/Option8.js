@@ -191,7 +191,7 @@ class Option8 extends Component {
             <div>
 
                 <div>
-                  
+               <h1>업무부여</h1> 
                     <Row>
                         <Col span={11}><InfiniteListExample  
                         search ={this.state.search}

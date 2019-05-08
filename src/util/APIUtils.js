@@ -218,3 +218,11 @@ export function getAllTask(body) {
         body: JSON.stringify(body)  
     });
 }
+export function ReportConverter(body) {
+
+    return request({
+        url: API_BASE_URL + "/report/update",
+        method: 'POST',
+        body: JSON.stringify(body)  
+    });
+}

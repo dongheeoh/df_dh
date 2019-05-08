@@ -1,106 +1,100 @@
-import { Table, Divider, Tag } from 'antd';
 import React, { Component } from 'react';
-import { Pagination } from 'antd';
-import { getTask } from '../util/APIUtils';
+import Report from './Report';
+import {
+    Table, Input, Button, Icon,
+  } from 'antd';
+  import Highlighter from 'react-highlight-words';
 class Option6 extends Component {
-
-
-
     constructor(props) {
         super(props);
         this.state = {
-            tasks: null,
-            isLoading: false,
+            searchText: '',
             columns : [{
-                title: '제목',
+                title: 'title',
                 dataIndex: 'title',
-              
                 key: 'title',
-                render: text => <a href="javascript:;">{text}</a>,
+                ...this.getColumnSearchProps('title')
+              
               }, {
-                title: '내용',
+                title: 'content',
                 dataIndex: 'content',
                 key: 'content',
-              }, {
-                title: 'Action',
-                key: 'action',
-                render: (text, record) => (
-                  <span>
-                    <a href="javascript:{console.log('a')};">Invite {record.name}</a>
-                    <Divider type="vertical" />
-                    <a href="javascript:;">Delete</a>
-                  </span>
-                ),
-              }],
-              
-              data : [{
-                key: '1',
-                name: 'John Brown',
-                age: 32,
-                address: 'New York No. 1 Lake Park',
-                tags: ['nice', 'developer'],
-              }, {
-                key: '2',
-                name: 'Jim Green',
-                age: 42,
-                address: 'London No. 1 Lake Park',
-                tags: ['loser'],
-              }, {
-                key: '3',
-                name: 'Joe Black',
-                age: 32,
-                address: 'Sidney No. 1 Lake Park',
-                tags: ['cool', 'teacher'],
+                ...this.getColumnSearchProps('content')
+              },{
+                title: 'createdAt',
+                dataIndex: 'createdAt',
+                key: 'createdAt',
+                ...this.getColumnSearchProps('createdAt')
               }]
-             
         }
-        this.loadTask = this.loadTask.bind(this);
-        
+      
     }
     
-    loadTask() {
-      this.setState({
-          isLoading: true
-      });
-    
-      getTask()
-      .then(response => {
-          this.setState({
-            tasks: response,
-              isLoading: false
-          
-            });
-
-      }).catch(error => {
-          if(error.status === 404) {
-              this.setState({
-                  notFound: true,
-                  isLoading: false
-              });
-          } else {
-              this.setState({
-                  serverError: true,
-                  isLoading: false
-              });        
+    getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({
+          setSelectedKeys, selectedKeys, confirm, clearFilters,
+        }) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={node => { this.searchInput = node; }}
+              placeholder={`Search ${dataIndex}`}
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+              style={{ width: 188, marginBottom: 8, display: 'block' }}
+            />
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm)}
+              icon="search"
+              size="small"
+              style={{ width: 90, marginRight: 8 }}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => this.handleReset(clearFilters)}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reset
+            </Button>
+          </div>
+        ),
+        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: (visible) => {
+          if (visible) {
+            setTimeout(() => this.searchInput.select());
           }
-      });        
-    }
+        },
+        render: (text) => (
+          <Highlighter
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[this.state.searchText]}
+            autoEscape
+            textToHighlight={text.toString()}
+          />
+        ),
+      })
     
-    componentWillMount() {
-     this.loadTask('');
-     console.log(this.state.tasks)
-    }
+      handleSearch = (selectedKeys, confirm) => {
+        confirm();
+        this.setState({ searchText: selectedKeys[0] });
+      }
+    
+      handleReset = (clearFilters) => {
+        clearFilters();
+        this.setState({ searchText: '' });
+      }
+    render() {
 
-
-
-   
-    render () {
         return (
             <div>
-
-<Table pagination={{ defaultPageSize: 10 }} columns={this.state.columns} dataSource={this.state.tasks}/>
-</div>
-        )
+               <Report title={'업무리스트'}  status={'PROGRESS'} route={'task'}
+               columns={this.state.columns}/>
+            </div>
+        );
     }
 }
-export default Option6;
+ export default Option6;

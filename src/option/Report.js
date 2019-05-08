@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Option4table from './Option4table';
+import Option4table from '../ListComponent/Option4table';
 import {
     Input
  } from 'antd';
- import { getAllReport, getAllTask } from '../util/APIUtils';
-import Option4DatePick from './Option4DatePicker';
-import Option4Search from './Option4Search';
-import Option4Input from './Option4Input';
-import Option4modal from './Option4modal';
+ import { getAllReport, getAllTask,ReportConverter } from '../util/APIUtils';
+import Option4DatePick from '../ListComponent/Option4DatePicker';
+import Option4Search from '../ListComponent/Option4Search';
+import Option4Input from '../ListComponent/Option4Input';
+import Option4modal from '../ListComponent/Option4modal';
 import LoadingIndicator from '../common/LoadingIndicator';
 import ServerError from '../common/ServerError';
 import NotFound from '../common/NotFound';
@@ -17,16 +17,20 @@ class Report extends Component {
     constructor(props) {
         super(props);
         var d = new Date();
+        this.progress = this.progress.bind(this);
         this.state = {
         buttonTitle: this.props.buttonTitle,
         value:{status:this.props.status},
         title:this.props.title,
         route:this.props.route,
-        datas:null
+        
+       
+        datas:null,
+        ok:null
         }
         this.state.value.search='';
         this.state.value.from=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-        this.state.value.to=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+        this.state.value.to=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+(d.getDate()+1);
         this.load = this.load.bind(this);
     }
     search= (data) => {
@@ -51,9 +55,8 @@ class Report extends Component {
             this.setState({
                 datas: response,
                 isLoading: false
-            
+                
               });
-  
         }).catch(error => {
             if(error.status === 404) {
                 this.setState({
@@ -68,7 +71,7 @@ class Report extends Component {
             }
         });    
     }else if(this.state.route == 'task'){
-
+        console.log(this.state.value)
         //여기부터
         //getAllTask구현
         //column과 data 수정
@@ -77,9 +80,9 @@ class Report extends Component {
             this.setState({
                 datas: response,
                 isLoading: false
-            
+                
               });
-  
+              console.log(this.state.datas);
         }).catch(error => {
             if(error.status === 404) {
                 this.setState({
@@ -96,10 +99,75 @@ class Report extends Component {
          }
       }
       
+      ModalLoad(state) {
+          console.log(state)
+        this.setState({
+          isLoading: true,
+        });
+        if (this.state.route == 'report') {
+          ReportConverter(state)
+            .then(response => {
+              this.setState({
+                ok: response,
+                isLoading: false
+                
+              });
+              this.load();
+            }).catch(error => {
+              if (error.status === 404) {
+                this.setState({
+                  notFound: true,
+                  isLoading: false
+                });
+              } else {
+                this.setState({
+                  serverError: true,
+                  isLoading: false
+                });
+              }
+            });
+        } else if (this.state.route == 'task') {
+    
+    
+        }
+      }
+
+
+      progress  = (idData,stateData,textArea) => {
+        let state = {state:stateData, id:idData,description:textArea};
+        this.ModalLoad(state);
+       
+       
+      }
+    
+   
+
+
 
       componentWillMount() {
-       this.load();
+       if(this.state.route == 'report'){
+           this.setState({
+            columns:this.props.columns.concat( {
+                title: 'action',
+                key: 'id',
+                render: (record) => (
+                  
+                  <span>
+                    <Option4modal  
+                     progress={this.progress}
+                    route={this.state.route} id={record.id} title={this.state.buttonTitle} />
+                  </span>
+                )}),
+           });
+       }else{
+             this.setState({
+            columns:this.props.columns
+            })
+       }
+        this.load();
+
       }
+     
 
 
     render() {
@@ -129,10 +197,12 @@ class Report extends Component {
                 search={this.search}/>
                 </div>
 
-                <Option4table 
+                <Option4table
+                route = {this.state.route} 
+                columns ={this.state.columns}
                 buttonTitle={this.state.buttonTitle} data={this.state.datas}/>
                 </div>
         );
     }
 }
- export default Report;
+ export default Report; 

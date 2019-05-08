@@ -8,9 +8,27 @@ import LoadingIndicator  from '../../common/LoadingIndicator';
 import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
-
+import {
+    Upload, message, Button, Icon,
+  } from 'antd';
 const TabPane = Tabs.TabPane;
-
+const props = {
+    name: 'file',
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -82,9 +100,12 @@ class Profile extends Component {
                         <div className="user-profile">
                             <div className="user-details">
                                 <div className="user-avatar">
-                                    <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
-                                        {this.state.user.name[0].toUpperCase()}
+                                <Upload {...props}>
+                                    <Avatar   type="upload"  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" className="user-avatar-circle" >
+
                                     </Avatar>
+                                </Upload>
+                                    <app/>
                                 </div>
                                 <div className="user-summary">
                                     <div className="full-name">{this.state.user.name}</div>
