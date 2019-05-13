@@ -135,13 +135,12 @@ export function getUserTask() {
     });
 }
 
-export function getReport(search,search2) {
-    search = search || '';
-    search2 = search2 || '';
+export function getReport(data) {
+    console.log(data)
     return request({
-        url: API_BASE_URL + "/report/all?search=" + search+"&search2="+search2,
-        method: 'GET',
-        
+        url: API_BASE_URL + "/report/all",
+        method: 'POST',
+        body: JSON.stringify(data)
     });
 }
 
@@ -243,6 +242,21 @@ export function ReportConverter(body) {
     });
 }
 
+export function deleteTask(id) {
+
+    return request({
+        url: API_BASE_URL + "/task/delete?id="+id,
+        method: 'GET',
+    });
+}
+
+export function deleteReport(id) {
+
+    return request({
+        url: API_BASE_URL + "/report/delete?id="+id,
+        method: 'GET',
+    });
+}
 export function r(body) {
     console.log(body)
 }

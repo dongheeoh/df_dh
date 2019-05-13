@@ -12,7 +12,7 @@ class SearchForm extends Component {
                 <Search
                     placeholder="input search text"
                     onSearch={value =>  this.props.search(value)}
-                    
+                    defaultValue={this.props.value}
                     enterButton
                 />
                

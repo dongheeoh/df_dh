@@ -5,12 +5,12 @@ import {
   } from 'antd';
   import Highlighter from 'react-highlight-words';
   import {Card} from 'antd';
-  
-
 class Option6 extends Component {
     constructor(props) {
         super(props);
+        this.childComponent;
         this.state = {
+            text:'정말로 삭제하시겠습니까?',
             searchText: '',
             columns : [{
                 title: 'title',
@@ -47,6 +47,22 @@ class Option6 extends Component {
         }
       
     }
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
@@ -107,11 +123,11 @@ class Option6 extends Component {
       }
     
     render() {
-       
+     
         return (
             <div>
             <Card title='업무리스트'> 
-               <Report title={'업무리스트'}  status={'PROGRESS'} route={'task'}
+               <Report title={'업무리스트'}  status={'PROGRESS'} route={'task'} 
                columns={this.state.columns}/>
             </Card>
             </div>

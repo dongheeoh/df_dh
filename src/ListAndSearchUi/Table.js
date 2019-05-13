@@ -1,14 +1,14 @@
 import { Table, Divider, Tag } from 'antd';
 import React, { Component } from 'react';
 import ModalTest from './ModalTest';
-import { Modal, Button } from 'antd';
+import { Popconfirm, message,Button } from 'antd';
+
 class DatePickers extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
         reports: this.props.reports,
-
         columns : [{
           title: '제목',
           dataIndex: 'title',
@@ -42,6 +42,11 @@ class DatePickers extends Component {
         
         
     }
+    console.log(';;;;;;;;;;;;;;;;;;;;;;;;' +this.props.columns)
+    if(this.props.columns != undefined){
+        this.state.columns = this.state.columns.concat(this.props.columns)
+    }
+   
 }
 
  

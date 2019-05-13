@@ -1,6 +1,8 @@
-import { Tabs } from 'antd';
 import React, { Component } from 'react';
 import TableForm from './Table';
+import { Tabs, Icon } from 'antd';
+
+
 const TabPane = Tabs.TabPane;
 
 function callback(key) {
@@ -16,8 +18,9 @@ class TabForm extends Component {
             holdArray:[],
             waitArray:[],
             progressArray:[],
-
+            columns:this.props.columns
         }
+        console.log(';llllllllllllllllllllll' + this.state.columns)
     }
 
     pushProperty(i){
@@ -27,6 +30,7 @@ class TabForm extends Component {
             "content": this.state.reports[i].content,"date": this.state.reports[i].createdAt,
              "status": this.state.reports[i].status,
              "description" : this.state.reports[i].description,
+             "id" :this.state.reports[i].id,
             tags: ['cool', 'teacher']
             };
     }
@@ -42,7 +46,7 @@ class TabForm extends Component {
                 progressArray.push(this.pushProperty(i));
             }else if(this.state.reports[i].status == 'WAIT'){
                 waitArray.push(this.pushProperty(i));
-            }else{
+            }else if(this.state.reports[i].status == 'HOLD'){
                 holdArray.push(this.pushProperty(i));
             }
             
@@ -58,13 +62,16 @@ class TabForm extends Component {
     render() {
         this.init();
         return (
-
-          
-            <Tabs defaultActiveKey="1" onChange={callback}>
-                <TabPane tab="대기" key="1"><TableForm reports={this.state.waitArray}/></TabPane>
+         
+            <div>
+            <p></p>
+            <Tabs  type="card" defaultActiveKey="1" onChange={callback}>
+                <TabPane tab="대기" key="1"><TableForm reports={this.state.waitArray} columns={this.props.columns}/></TabPane>
                 <TabPane tab="진행" key="2"><TableForm reports={this.state.progressArray}/></TabPane>
                 <TabPane tab="보류" key="3"><TableForm reports={this.state.holdArray} /></TabPane> 
+                
             </Tabs>
+            </div>
         );
     }
 }

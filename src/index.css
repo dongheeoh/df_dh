@@ -15,18 +15,16 @@ body {
 
 .center{
   width : 100%;
-  text-align: center;
+
   padding :20px;
-  margin-right: 200px;
+  margin-right: 400px;
 }
 .main{
   display: inline-block;
   width : 100%;
   
 }
-.marginRight{
-  margin-right: 200px;
-}
+
 .ant-fullcalendar-header{
   border-width: 1px;
   border-style: solid;
