@@ -5,7 +5,7 @@ import './edit.css'
 class Option2 extends Component {
     render() {
         return (
-                <Card title='보고서등록'>
+                <Card title='보고소등록'>
                 <div className='edit'>
                 <TextEdit router={'report'}/>
                 </div>
