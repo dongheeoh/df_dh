@@ -8,8 +8,9 @@ import {
   import { Input } from 'antd';
   import SelectList from '../ListAndSearchUi/SelectList';
   import { Modal, Button } from 'antd';
+  import {BASE_URL, API_BASE_URL} from '../constants/index'
 const Search = Input.Search;
-  const fakeDataUrl = 'http://localhost:8080/api/user/all';
+  const fakeDataUrl = API_BASE_URL+'/user/all';
   
   class InfiniteListExample extends Component {
 
@@ -63,8 +64,7 @@ const Search = Input.Search;
         contentType: 'application/json',
         success: (res) => {
           callback(res);
-          console.log(res)
-          console.log(this.state.search);
+          
         },
       });
     }
@@ -131,7 +131,7 @@ const Search = Input.Search;
               renderItem={item => (
                 <List.Item key={item.id}>
                   <List.Item.Meta
-                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                    avatar={<Avatar icon="user" size={80} src={BASE_URL+"test/"+item.profile} />}
                     title={<a href="https://ant.design">{item.name}</a>}
                     description={item.email}
                   />

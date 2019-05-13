@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Option1Calendar from './Calendar';
 import { getUserTask,getUserCalendar } from '../util/APIUtils';
 import LoadingIndicator from '../common/LoadingIndicator';
+import {Card} from 'antd';
 class Option1 extends Component {
 
     constructor(props) {
@@ -84,7 +85,9 @@ class Option1 extends Component {
           else{  
           return (
             <div>
+                <Card title='업무리스트'>
                 <Option1Calendar calendar = {cal} />   
+                </Card>            
             </div>
         );
           }

@@ -3,13 +3,14 @@ import { Table, Divider, Tag } from 'antd';
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
 import InfiniteListExample from '../ListAndSearchUi/ScrollList';
-
+import { r} from '../util/APIUtils';
 import SelectList from '../ListAndSearchUi/SelectList';
 import { getSelectTask,createUserTask,deleteUserTask } from '../util/APIUtils';
 import LoadingIndicator from '../common/LoadingIndicator';
 import ServerError from '../common/ServerError';
 import NotFound from '../common/NotFound';
 import { Modal, Button } from 'antd';
+import {Card} from 'antd';
 class Option8 extends Component {
     constructor(props) {
         super(props);
@@ -20,15 +21,23 @@ class Option8 extends Component {
             ok:null,
             search:'',
             taskIds:[],
-            taskSearch:''
-           
+            taskSearch:'',
+           dataSource:[{
+             key:1,
+             itemNo:1,
+             content:'input text'
+           }]
+          
         }
         this.loadTask = this.loadTask.bind(this);
         this.loadCreateUserTask = this.loadCreateUserTask.bind(this);
+        
     }
+
+   
+
     deleteUserTaskButton = (record) => {
 
-     console.log(record)
       
       
      
@@ -40,8 +49,6 @@ class Option8 extends Component {
     });
     search.search = data;
     search.userId = this.state.userId;
-    console.log(this.state.userId);
-    console.log(search)
     this.loadTask(search)
   }
     clickButton = (data,search) => {
@@ -51,7 +58,6 @@ class Option8 extends Component {
             userId:data,
             search:search
         })
-        console.log('--'+this.state.userId)
        
     }
     createAndDeleteButton = (data,order,time) => {
@@ -78,7 +84,9 @@ class Option8 extends Component {
       }
     }
 
-
+    a=()=>{
+      r(this.state.dataSource)
+    }
 
     loadTask(data) {
         this.setState({
@@ -125,7 +133,6 @@ class Option8 extends Component {
                 
   
               });
-              console.log(this.state.ok)
         }).catch(error => {
             if(error.status === 404) {
                 this.setState({
@@ -156,7 +163,6 @@ class Option8 extends Component {
                
   
               });
-              console.log(this.state.ok)
         }).catch(error => {
             if(error.status === 404) {
                 this.setState({
@@ -174,6 +180,7 @@ class Option8 extends Component {
 
 
     render() {
+      this.a();
         if(this.state.isLoading) {
             return <LoadingIndicator />;
           }
@@ -185,13 +192,12 @@ class Option8 extends Component {
           if(this.state.serverError) {
             return <ServerError />;
           }
-          console.log(this.state.tasks);
         return (
 
             <div>
 
                 <div>
-               <h1>업무부여</h1> 
+                <Card title='업무부여'>
                     <Row>
                         <Col span={11}><InfiniteListExample  
                         search ={this.state.search}
@@ -203,7 +209,7 @@ class Option8 extends Component {
                          taskSearch={this.state.taskSearch}/></Col> 
                        
                     </Row>
-                    
+                </Card> 
 
 
                 </div>

@@ -9,14 +9,18 @@ const FormItem = Form.Item;
 
 class Login extends Component {
     render() {
+        
         const AntWrappedLoginForm = Form.create()(LoginForm)
         return (
+        <div >
             <div className="login-container">
+            
                 <h1 className="page-title">Login</h1>
                 <div className="login-content">
                     <AntWrappedLoginForm onLogin={this.props.onLogin} />
                 </div>
             </div>
+            </div>    
         );
     }
 }

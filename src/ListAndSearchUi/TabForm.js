@@ -21,27 +21,37 @@ class TabForm extends Component {
     }
 
     pushProperty(i){
+        
         return {
             "key": i, "title": this.state.reports[i].title,
             "content": this.state.reports[i].content,"date": this.state.reports[i].createdAt,
              "status": this.state.reports[i].status,
+             "description" : this.state.reports[i].description,
             tags: ['cool', 'teacher']
             };
     }
 
     init(){
- 
+      
+        let holdArray= [];
+        let waitArray= [];
+        let progressArray = [];
+     
         for(let i = 0 ;  i < this.state.length; i++){
             if (this.state.reports[i].status == 'PROGRESS') {
-                this.state.progressArray.push(this.pushProperty(i));
+                progressArray.push(this.pushProperty(i));
             }else if(this.state.reports[i].status == 'WAIT'){
-                this.state.waitArray.push(this.pushProperty(i));
+                waitArray.push(this.pushProperty(i));
             }else{
-                this.state.holdArray.push(this.pushProperty(i));
+                holdArray.push(this.pushProperty(i));
             }
             
         }
-           
+        this.state={
+            holdArray:holdArray,
+            waitArray:waitArray,
+            progressArray:progressArray,
+        }
        
     }
 
@@ -53,7 +63,7 @@ class TabForm extends Component {
             <Tabs defaultActiveKey="1" onChange={callback}>
                 <TabPane tab="대기" key="1"><TableForm reports={this.state.waitArray}/></TabPane>
                 <TabPane tab="진행" key="2"><TableForm reports={this.state.progressArray}/></TabPane>
-                <TabPane tab="보류" key="3"><TableForm reports={this.state.holdArray}/></TabPane> 
+                <TabPane tab="보류" key="3"><TableForm reports={this.state.holdArray} /></TabPane> 
             </Tabs>
         );
     }

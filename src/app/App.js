@@ -93,13 +93,21 @@ class App extends Component {
       description: "You're successfully logged in.",
     });
     this.loadCurrentUser();
-    this.props.history.push("/");
+    this.props.history.push("/Option1");
   }
 
   render() {
     if(this.state.isLoading) {
       console.log('1');
       return <LoadingIndicator />
+    }
+    let sider;
+    if(this.state.currentUser == null){
+      sider=[]
+    }else{
+      sider=[
+         <Sider className="app-Sider" ><SiderMenu/></Sider>
+      ];
     }
     return (
        <Layout className="app-container">
@@ -110,17 +118,17 @@ class App extends Component {
                     
           <Content className="app-content">
             <Layout>
-            <Sider className="app-Sider" ><SiderMenu/></Sider>
+
+           {sider}
+            
             <div className="center">
-            <div className="main">
+            <div className="main" >
               <Switch>     
-                <Route exact path="/" 
-                  render={(props) => <PollList isAuthenticated={this.state.isAuthenticated} 
-                      currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
-                </Route>
                 <Route path="/login" 
                   render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
                 <Route path="/signup" component={Signup}></Route>
+                <PrivateRoute authenticated={this.state.isAuthenticated} exact path="/"  handleLogout={this.handleLogout}
+                component={(props) => <Option1 isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}></PrivateRoute>
                 <Route path="/users/:username" 
                   render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
                 </Route>

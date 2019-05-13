@@ -9,7 +9,7 @@ import LoadingIndicator from '../common/LoadingIndicator';
 import ServerError from '../common/ServerError';
 import NotFound from '../common/NotFound';
 import moment from 'moment';
-
+import {Card} from 'antd';
 class Option3 extends Component {
 
     constructor(props) {
@@ -119,6 +119,7 @@ class Option3 extends Component {
             <div>
                
                 <div>
+                <Card title='보고서관리'>
                      <Row>
                          <Col span={12}><DatePickers dateSearch={this.dateSearch} to={this.state.to} from={this.state.from} /></Col>
                          <Col span={12}><SerachForm search={this.search}/></Col>
@@ -126,6 +127,7 @@ class Option3 extends Component {
                      <Row>
                          <Col span={24}><TabForm reports={this.state.reports}/></Col>
                      </Row>
+                </Card>
                  </div>
                 {/* <Tap isAuthenticated={this.props.isAuthenticated} currentUser={this.props.currentUser}
                     userTasks={userTask} />  */}

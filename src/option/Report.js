@@ -11,6 +11,7 @@ import Option4modal from '../ListComponent/Option4modal';
 import LoadingIndicator from '../common/LoadingIndicator';
 import ServerError from '../common/ServerError';
 import NotFound from '../common/NotFound';
+import { message } from 'antd';
  const InputGroup = Input.Group;
 
 class Report extends Component {
@@ -33,6 +34,10 @@ class Report extends Component {
         this.state.value.to=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+(d.getDate()+1);
         this.load = this.load.bind(this);
     }
+    success = () => {
+      message.success('변경 사항이 저장되었습니다.');
+    }
+
     search= (data) => {
         
         this.state.value.search=data;
@@ -110,9 +115,11 @@ class Report extends Component {
               this.setState({
                 ok: response,
                 isLoading: false
+
                 
               });
               this.load();
+              this.success();
             }).catch(error => {
               if (error.status === 404) {
                 this.setState({
@@ -150,12 +157,12 @@ class Report extends Component {
             columns:this.props.columns.concat( {
                 title: 'action',
                 key: 'id',
-                render: (record) => (
+                render: (record,columns) => (
                   
                   <span>
-                    <Option4modal  
+                    <Option4modal 
                      progress={this.progress}
-                    route={this.state.route} id={record.id} title={this.state.buttonTitle} />
+                     route={this.state.route} record={record} title={this.state.buttonTitle} />
                   </span>
                 )}),
            });
@@ -185,7 +192,7 @@ class Report extends Component {
 
         return (
             <div className="Option4">
-                <h1>{this.props.title}</h1>
+                
                 <Option4DatePick
                 to={this.state.value.to} from={this.state.value.from}
                 dateSearch={this.dateSearch}/>

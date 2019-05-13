@@ -4,6 +4,7 @@ import {
     Table, Input, Button, Icon,
   } from 'antd';
   import Highlighter from 'react-highlight-words';
+  import {Card} from 'antd';
 class Option4 extends Component {
     constructor(props) {
         super(props);
@@ -15,11 +16,6 @@ class Option4 extends Component {
                 key: 'title',
                 ...this.getColumnSearchProps('title')
               
-              }, {
-                title: 'content',
-                dataIndex: 'content',
-                key: 'content',
-                ...this.getColumnSearchProps('content')
               },  {
                 title: 'taskTitle',
                 dataIndex: 'taskTitle',
@@ -104,7 +100,9 @@ class Option4 extends Component {
        
         return (
             <div>
+              <Card title='업무보고현황'>
                 <Report title={'업무보고현황'} buttonTitle={'결제'} status={'WAIT'} route={'report'} columns={this.state.columns}/>
+                </Card>
             </div>
         );
     }

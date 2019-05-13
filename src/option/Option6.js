@@ -4,6 +4,9 @@ import {
     Table, Input, Button, Icon,
   } from 'antd';
   import Highlighter from 'react-highlight-words';
+  import {Card} from 'antd';
+  
+
 class Option6 extends Component {
     constructor(props) {
         super(props);
@@ -19,12 +22,27 @@ class Option6 extends Component {
                 title: 'content',
                 dataIndex: 'content',
                 key: 'content',
-                ...this.getColumnSearchProps('content')
+               
+                ...this.getColumnSearchProps('content'),
+                render: (text, row, index) => {
+                  console.log(text,row,index)
+                  return  <div dangerouslySetInnerHTML={ {__html: text} }></div>
+                }
               },{
                 title: 'createdAt',
                 dataIndex: 'createdAt',
                 key: 'createdAt',
-                ...this.getColumnSearchProps('createdAt')
+                ...this.getColumnSearchProps('createdAt'),
+                render: (text, row, index) => {
+                  let date = new Date(text);
+                  return <div>{date.getFullYear()+"-"+
+                              (date.getMonth()+1)+"-"+
+                              date.getDate()}<br/>{
+                              date.getHours()+":"+
+                              date.getMinutes()+":"+
+                              date.getSeconds()
+                               }</div>
+                }
               }]
         }
       
@@ -87,12 +105,15 @@ class Option6 extends Component {
         clearFilters();
         this.setState({ searchText: '' });
       }
+    
     render() {
-
+       
         return (
             <div>
+            <Card title='업무리스트'> 
                <Report title={'업무리스트'}  status={'PROGRESS'} route={'task'}
                columns={this.state.columns}/>
+            </Card>
             </div>
         );
     }

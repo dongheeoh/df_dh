@@ -1,5 +1,5 @@
 import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
-
+import axios from 'axios';
 const request = (options) => {
     const headers = new Headers({
         'Content-Type': 'application/json',
@@ -152,7 +152,13 @@ export function createTask(task) {
         body: JSON.stringify(task)         
     });
 }
-
+export function createReport(report) {
+    return request({
+        url: API_BASE_URL + "/report/create",
+        method: 'POST',
+        body: JSON.stringify(report)         
+    });
+}
 export function getTask() {
 
     return request({
@@ -218,6 +224,16 @@ export function getAllTask(body) {
         body: JSON.stringify(body)  
     });
 }
+
+export function changePassword(body) {
+
+    return request({
+        url: API_BASE_URL + "/user/changePassword",
+        method: 'POST',
+        body: JSON.stringify(body)  
+    });
+}
+
 export function ReportConverter(body) {
 
     return request({
@@ -226,3 +242,32 @@ export function ReportConverter(body) {
         body: JSON.stringify(body)  
     });
 }
+
+export function r(body) {
+    console.log(body)
+}
+
+class Service {
+
+  constructor() {
+    console.log("Service is constructed");
+  }
+
+  getRestClient() {
+    if (!this.serviceInstance) {
+      this.serviceInstance = axios.create({
+        baseURL: 'http://218.39.221.79:8080/api',
+        timeout: 10000,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+          },
+      });
+    }
+
+    
+    return this.serviceInstance;
+  }
+}
+
+export default (new Service());

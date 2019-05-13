@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import TextEdit from './TextEdit';
-import Option2Input from './Input';
-import Uploader from './Uploader';
+import {Card} from 'antd';
+import './edit.css'
 
-
-
-class Option6 extends Component {
+class Option7 extends Component {
     render() {
         return (
-            <div className="Option2">
-                <h1>업무등록</h1>
-               
-                <TextEdit/>
-         
-              
-            </div>
+                <Card title='업무등록'> 
+                <div className="edit">
+                <TextEdit router={'task'}/>
+                </div>
+                </Card>
         );
     }
 }
- export default Option6;
+ export default Option7;

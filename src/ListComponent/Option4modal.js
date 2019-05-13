@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import { Modal, Button ,Input} from 'antd';
-import LoadingIndicator from '../common/LoadingIndicator';
-import ServerError from '../common/ServerError';
-import NotFound from '../common/NotFound';
-import { ReportConverter, getAllTask } from '../util/APIUtils';
+import { Modal, Button, Input } from 'antd';
+import { Row, Col, Slider, Card } from 'antd';
 const { TextArea } = Input;
-
+const ButtonGroup = Button.Group;
 class Option4modal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      id:this.props.id,
-      textArea:''
-
+      id: this.props.record.id,
+      textArea: '',
+      content: this.props.record.content,
+      title: this.props.record.title,
+      status: this.props.record.status
     }
+    console.log(this.props.record)
   }
 
   showModal = (e) => {
     this.setState({
       visible: true,
-      
+
     });
   }
 
@@ -37,40 +37,66 @@ class Option4modal extends React.Component {
 
   }
 
- onChange = (e) =>{
-  this.setState({
-  textArea:e.target.value
-  }) 
-}
+  onChange = (e) => {
+    this.setState({
+      textArea: e.target.value
+    })
+  }
 
+  disabled = () => {
+    if (this.state.status == 'PROGRESS') {
+      return true;
+    }
+    return false;
+  }
 
   render() {
-   
+
 
     return (
       <div>
-        <Button type="primary" onClick={this.showModal}>
+        <Button onClick={this.showModal}>
           {this.props.title}
         </Button>
         <Modal
-          title="Basic Modal"
+          title='보고서 보기'
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          footer={null}
+          width={1100}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <br/>
-          반려사유작성란
-          <TextArea rows={4} onChange={this.onChange}/>
-          <Button type="primary" onClick={id=>this.props.progress(this.state.id,'PROGRESS',this.state.textArea)}>
-         승인
-        </Button>
-        <Button type="primary" onClick={id=>this.props.progress(this.state.id,'HOLD',this.state.textArea)}>
-          반려
-        </Button>
-         
+          <Card
+            title={this.state.title}
+          >
+            <Row type="flex" justify="center">
+              <div dangerouslySetInnerHTML={{ __html: this.state.content }}></div>
+            </Row>
+          </Card>
+          <p></p>
+          <Card
+            title='반려사유작성란'
+          >
+          <TextArea rows={4} onChange={this.onChange} />
+          </Card>
+          <p></p>
+
+          <Row type="flex" justify="end">
+            <Col span={4} >
+
+              <ButtonGroup>
+
+                <Button disabled={this.disabled()} size='large' onClick={id => this.props.progress(this.state.id, 'PROGRESS', this.state.textArea)}>
+                  승인
+                </Button>
+
+                <Button size='large' onClick={id => this.props.progress(this.state.id, 'HOLD', this.state.textArea)}>
+                  반려
+                </Button>
+              </ButtonGroup>
+            </Col>
+          </Row>
+
         </Modal>
       </div>
     );
@@ -78,4 +104,4 @@ class Option4modal extends React.Component {
 }
 
 
- export default Option4modal;
+export default Option4modal;
