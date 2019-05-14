@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Uploader from './Uploader';
 import {
     Button
     } from 'antd';
@@ -13,7 +14,7 @@ import { message } from 'antd';
 import {
     Input, Select
  } from 'antd';
- import {html} from './html';
+ import {html, html2,html3} from './html';
  const Option = Select.Option;
 const InputGroup = Input.Group;
 class TextEdit extends Component {
@@ -134,9 +135,9 @@ class TextEdit extends Component {
                 <div className="information" >
         <InputGroup compact>
           <Select defaultValue="일일" style={{ width: '20%' }} onChange={this.updateContent}>
-            <Option value="일일">일일 보고서</Option>
-            <Option value={html()}>주간 보고서</Option>
-            <Option value="월간">월간 보고서</Option>
+            <Option value={html()}>일일 보고서</Option>
+            <Option value={html2()}>주간 보고서</Option>
+            <Option value={html3()}>월간 보고서</Option>
           </Select>
           <Input title={'title'} value={this.state.title} style={{ width: '65%' }} placeholder="제목" onChange={this.onChange}/>
           <Select style={{ width: '15%' }} placeholder="결제선 지정">
@@ -150,6 +151,7 @@ class TextEdit extends Component {
                 config={this.config}
                 onChange={this.updateContent}
                 />
+                <Uploader></Uploader>
                 <div className='submit'>
                     <Button onClick={this.onClick}>등록하기</Button>
                 </div>
